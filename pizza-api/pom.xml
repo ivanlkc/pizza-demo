@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.bestpizza</groupId>
+		<artifactId>pizza-demo</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>pizza-api</artifactId>
+	<name>pizza-api</name>
+	<description>Contains the POJO of the Order API, generated from the OpenAPI definition using the openapi-generator-maven-plugin.</description>
+
+	<properties>
+		<jkube.skip>true</jkube.skip>
+		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+		<spring-boot.build-image.skip>true</spring-boot.build-image.skip>
+		<spring-boot.run.skip>true</spring-boot.run.skip>
+		<spring-boot.stop.skip>true</spring-boot.stop.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.3.0</version>
+				<executions>
+					<execution>
+					<?m2e execute?>
+						<id>generate-models</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/OrderOpenApi.yml</inputSpec>
+							<output>${project.basedir}/src/main/java</output>
+							<generatorName>java</generatorName>
+							<generateApis>false</generateApis>
+							<generateApiTests>false</generateApiTests>
+							<generateApiDocumentation>false</generateApiDocumentation>
+							<generateModels>true</generateModels>
+							<generateModelTests>false</generateModelTests>
+							<generateModelDocumentation>false</generateModelDocumentation>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<withXml>true</withXml>
+							<library>native</library>
+							<configOptions>
+								<sourceFolder>/</sourceFolder>
+								<modelPackage>com.bestpizza.api.model</modelPackage>
+								<serializableModel>true</serializableModel>
+								<withXml>true</withXml>
+								<library>native</library>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- There are some useless code generated which can't be disabled for 
+				now. Following plugin comment them out. -->
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+					<?m2e execute?>
+						<id>fix-model-errors</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>${project.basedir}/src/main/java/**/*.java</include>
+							</includes>
+							<unescape>true</unescape>
+							<replacements>
+								<replacement>
+									<token>@javax.annotation.Nullable</token>
+									<value>//@javax.annotation.Nullable</value>
+								</replacement>
+								<replacement>
+									<token>@javax.annotation.Nonnull</token>
+									<value>//@javax.annotation.Nonnull</value>
+								</replacement>
+								<replacement>
+									<token>@ApiModelProperty</token>
+									<value>//@ApiModelProperty</value>
+								</replacement>
+								<replacement>
+									<token>import io.swagger.annotations.</token>
+									<value>//import io.swagger.annotations.</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

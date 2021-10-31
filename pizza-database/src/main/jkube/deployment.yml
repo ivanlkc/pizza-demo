@@ -1,0 +1,46 @@
+# This file is required for the JKube maven plugin to properly configure the K8S probes.
+# Refer to https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin#enrichers-specific
+# The JKube plugin ships with a "jkube-healthcheck-spring-boot" but it only work with Spring Boot 1 for now.
+# Therefore this file will suppress "jkube-healthcheck-spring-boot" and assign the proper probe values.
+
+# In addition, the JKube port detection only look for "server.port".
+# However, pizza-database has to open two custom ports, one for TCP and one for WEB.
+
+# In this demo, pizza-database should have only 1 replica because we only want one database.
+# For now, there is no persistent layer. All data will be gone as soon as the pizza-database pod restarts.
+
+# It also set the Istio sampling rate to 100% for better visualization.
+
+spec:
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: |
+          tracing:
+            sampling: 100
+    spec:
+      containers:
+      - env:
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/liveness
+            port: @management.server.port@
+            scheme: HTTP
+          initialDelaySeconds: 180
+          successThreshold: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/readiness
+            port: @management.server.port@
+            scheme: HTTP
+          initialDelaySeconds: 10
+          successThreshold: 1
+        ports:
+        - containerPort: @pizza.database.tcp-port@
+          name: tcp-database
+          protocol: TCP
+        - containerPort: @pizza.database.web-port@
+          name: http-console
+          protocol: TCP

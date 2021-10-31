@@ -1,0 +1,33 @@
+# This file is required for the JKube maven plugin to properly configure the K8S probes.
+# Refer to https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin#enrichers-specific
+# The JKube plugin ships with a "jkube-healthcheck-spring-boot" but it only work with Spring Boot 1 for now.
+# Therefore this file will suppress "jkube-healthcheck-spring-boot" and assign the proper probe values.
+
+# It also set the Istio sampling rate to 100% for better visualization.
+
+spec:
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: |
+          tracing:
+            sampling: 100
+    spec:
+      containers:
+      - env:
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/liveness
+            port: @management.server.port@
+            scheme: HTTP
+          initialDelaySeconds: 180
+          successThreshold: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/readiness
+            port: @management.server.port@
+            scheme: HTTP
+          initialDelaySeconds: 20
+          successThreshold: 1

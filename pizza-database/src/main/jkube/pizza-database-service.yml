@@ -1,0 +1,11 @@
+# This file is required for the JKube maven plugin to properly configure the ClusterIP for the H2 TCP database connection.
+# The JKube plugin will only detect "server.port" used by tomcat.
+# Therefore this file will override that behaviour and assign the proper ClusterIP for H2 TCP JDBC connections.
+
+spec:
+  ports:
+  - name: tcp-database
+    port: @pizza.database.tcp-port@
+    protocol: TCP
+    targetPort: @pizza.database.tcp-port@
+  type: ClusterIP

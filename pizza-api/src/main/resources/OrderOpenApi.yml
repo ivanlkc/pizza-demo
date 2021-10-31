@@ -1,0 +1,121 @@
+openapi: 3.0.1
+info:
+  title: Best Pizza Order API
+  description: 'This is the OpenAPI definition for the Best Pizza Order API. You can view it using the Swagger Editor available at [https://editor.swagger.io/](https://editor.swagger.io/).'
+  version: 1.0.0
+servers:
+- url: http://pizza-api-impl:8080/v1
+tags:
+- name: Orders
+  description: Everything about your pizza orders
+paths:
+  /orders:
+    post:
+      tags:
+      - Orders
+      summary: Create a new order
+      operationId: addOrder
+      requestBody:
+        description: Order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+      security:
+      - best_pizza_auth:
+        - orders.create
+      x-codegen-request-body-name: body
+    get:
+      tags:
+      - Orders
+      summary: Get all orders
+      operationId: getAllOrders
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+      security:
+      - best_pizza_auth:
+        - orders.read
+  /orders/{orderId}:
+    get:
+      tags:
+      - Orders
+      summary: Find order by ID
+      description: Returns a single order
+      operationId: getOrderById
+      parameters:
+      - name: orderId
+        in: path
+        description: ID of order to return
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+      security:
+      - best_pizza_auth:
+        - orders.read
+components:
+  schemas:
+    Order:
+      required:
+      - price
+      - pizzas
+      type: object
+      properties:
+        id:
+          type: string
+        price:
+          type: integer
+          format: int32
+        pizzas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pizza'
+    Pizza:
+      required:
+      - name
+      - size
+      - quantity
+      type: object
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        toppings:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    best_pizza_auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: http://pizza-auth-server:8080/oauth2/token
+          scopes:
+            orders.create: create orders
+            orders.read: read orders

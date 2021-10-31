@@ -1,0 +1,12 @@
+# This file is required for the JKube maven plugin to properly configure the NodePort for the H2 Web Console external connection.
+# The JKube plugin will only expose 1 web port using ClusterIP.
+# Therefore this file will override that behaviour and create an extra NodePort for the h2-console.
+
+spec:
+  ports:
+  - name: http-console
+    nodePort: 30456
+    port: @pizza.database.web-port@
+    protocol: TCP
+    targetPort: @pizza.database.web-port@
+  type: NodePort

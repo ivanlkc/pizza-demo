@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.6</version>
+		<relativePath />
+	</parent>
+	<groupId>com.bestpizza</groupId>
+	<artifactId>pizza-demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>pizza-demo</name>
+	<description>A demo of a pizza ordering service which includes (1) A service accepting orders via HTTP; (2) A database; (3) A demo order generator; (4) An authorization server securing the back end.</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<jkube.skip.build.pom>true</jkube.skip.build.pom>
+		<management.server.port>9090</management.server.port>
+	</properties>
+
+	<modules>
+		<module>pizza-api</module>
+		<module>pizza-auth-server</module>
+		<module>pizza-database</module>
+		<module>pizza-api-impl</module>
+		<module>pizza-order-generator</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>kubernetes</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.jkube</groupId>
+						<artifactId>kubernetes-maven-plugin</artifactId>
+						<version>1.5.1</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

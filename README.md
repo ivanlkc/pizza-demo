@@ -65,6 +65,9 @@ A sample JSON payload of an Order looks like the following (Note that "id" shoul
 To demonstrate the usage of OAuth2, pizza-order-generator will use two sets of OAuth2 key-secret to simulate the following:
 1. A normal customer, who only have scope *"orders.create"*. He will create a new Order **every 30 seconds**.
 2. An admin user, who have both scope *"orders.create"* and *"orders.read"*. He will create a new Order **every 60 seconds**, and **query all existing orders every 60 seconds**.
+
+These key-secret and scopes are currently hard-coded in the [RegisteredClientRepository](pizza-auth-server/src/main/java/com/bestpizza/authserver/ServerConfig.java#L50).
+
 ## Database structure
 ![ER Diagram](documentation/ERDiagram.png)
 ## Prerequisites for development

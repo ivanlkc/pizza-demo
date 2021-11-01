@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### OpenAPI generator ###
+.openapi-generator
+
 ### STS ###
 .apt_generated
 .classpath

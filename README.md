@@ -139,3 +139,11 @@ Specifically, **pizza-api-impl** is the most important pod to investigate in thi
 ![Sample log](documentation/KubectlLogsProof.png)
 
 It should periodically receive order create requests and log them.
+
+## Potential improvements
+1. Have a functional front end app to replace pizza-order-generator.
+2. The Authorization Server may be replaced by a dedicated Identity and Access Management solution.
+3. Istio AuthorizationPolicy may replace Spring Security to guard the endpoints.
+4. Istio IngressGateway and VirtualService may be used to expose pizza-api-impl to external traffic, e.g. client side React app.
+5. The database should be persisted by changing the provider or by PersistentVolume.
+6. More API and initial data, such as querying list of available pizza, topping.

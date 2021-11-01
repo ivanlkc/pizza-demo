@@ -18,6 +18,7 @@ There are only 3 operations:
 - Create a new order (POST), requires OAuth2 scope *"orders.create"*.
 - Retrieve all existing orders (GET), requires OAuth2 scope *"orders.read"*.
 - Retrieve one existing order by order ID (GET), requires OAuth2 scope *"orders.read"*.
+
 The OpenAPI endpoint is completely secured by OAuth2.
 
 ![The OpenAPI definition](documentation/OpenAPI.png)

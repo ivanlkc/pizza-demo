@@ -1,5 +1,6 @@
 # pizza-demo
 A prototype of the pizza ordering back end services running in an [**Istio Service Mesh**](https://istio.io/).
+![The connections seen in Istio dashboard](documentation/KialiDisplay.png)
 ## The mechanism and connections explained
 - There are 4 pods, each having 2 containers; one being the Spring Boot app, the other being the Istio Envoy sidecar.
   1. **pizza-auth-server** is the Authorization Server, it provides a token endpoint and a JWKS endpoint.
@@ -17,6 +18,8 @@ There are only 3 operations:
 - Retrieve all existing orders (GET), requires OAuth2 scope *"orders.read"*.
 - Retrieve one existing order by order ID (GET), requires OAuth2 scope *"orders.read"*.
 The OpenAPI endpoint is completely secured by OAuth2.
+
+![The OpenAPI definition](documentation/OpenAPI.png)
 
 View the OpenAPI definition directly [here](https://editor.swagger.io/?url=https://raw.githubusercontent.com/ivanlkc/pizza-demo/main/pizza-api/src/main/resources/OrderOpenApi.yml).
 
@@ -69,6 +72,8 @@ Then put this into JDBC URL and Connect:
 ```
 jdbc:h2:tcp://localhost:9092/mem:best_pizza_db;DB_CLOSE_DELAY=-1
 ```
+![The H2 Web Console](documentation/H2Console.png)
+
 To use a different port number than 30456, modify [the JKube deployment YML](pizza-database/src/main/jkube/pizza-database-h2-console-service.yml).
 To use a randomly assigned port, simply remove the line "nodePort: 30456".
 ### 2. Inspect the pod status
